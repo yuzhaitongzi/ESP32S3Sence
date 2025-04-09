@@ -11,30 +11,30 @@
 #include "edge-impulse-sdk/dsp/image/image.hpp"
 
 #include "esp_camera.h"
-/* wifi ssidºÍÃÜÂë */
-#define WIFI_SSID "7010"
-#define WIFI_PASSWORD "70107010"
+/* wifi ssidå’Œå¯†ç  */
+#define WIFI_SSID "Wifi_ssid"
+#define WIFI_PASSWORD "Wifi_password"
 
-/* qq ÓÊÏäµÄ smtp µØÖ·ºÍ¶Ë¿ÚºÅ */
+/* qq é‚®ç®±çš„ smtp åœ°å€å’Œç«¯å£å· */
 #define SMTP_HOST "smtp.qq.com"
 #define SMTP_PORT 465
 
 /* 
-ÄãµÄÓÊÏäºÍÊÚÈ¨Âë ÊÚÈ¨ÂëÊÇQQÓÊÏäÍÆ³öµÄ£¬ÓÃÓÚµÇÂ¼µÚÈı·½¿Í»§¶ËµÄ×¨ÓÃÃÜÂë¡£ 
-ÈçºÎ»ñÈ¡ÊÚÈ¨Âë https://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
+ä½ çš„é‚®ç®±å’Œæˆæƒç  æˆæƒç æ˜¯QQé‚®ç®±æ¨å‡ºçš„ï¼Œç”¨äºç™»å½•ç¬¬ä¸‰æ–¹å®¢æˆ·ç«¯çš„ä¸“ç”¨å¯†ç ã€‚ 
+å¦‚ä½•è·å–æˆæƒç  https://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
 */
-#define AUTHOR_EMAIL "2605651072@qq.com"
+#define AUTHOR_EMAIL "your@qq.com"
 #define AUTHOR_PASSWORD "bchbirabbsmjeaeg"
-/* ½ÓÊÕÈËÓÊÏäµØÖ· email*/
-#define RECIPIENT_EMAIL "yuzhaitongzi@outlook.com"
+/* æ¥æ”¶äººé‚®ç®±åœ°å€ email*/
+#define RECIPIENT_EMAIL "XXXX@outlook.com"
 
-/* ¶¨Òå smtp session ¶ÔÏó*/
+/* å®šä¹‰ smtp session å¯¹è±¡*/
 SMTPSession smtp;
 
-/* »ñÈ¡ÓÊ¼ş·¢ËÍ×´Ì¬µÄ»Øµ÷º¯Êı */
+/* è·å–é‚®ä»¶å‘é€çŠ¶æ€çš„å›è°ƒå‡½æ•° */
 void getSmtpStatusCallback(SMTP_Status status);
 
-U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);  //ÉèÖÃoled´óÆÁµÄ²ÎÊı
+U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);  //è®¾ç½®oledå¤§å±çš„å‚æ•°
 
 
 
@@ -118,13 +118,13 @@ bool ei_camera_capture(uint32_t img_width, uint32_t img_height, uint8_t *out_buf
 * @brief      Arduino setup function
 */
 
-unsigned long previousMillis = 0;  // ÉÏÒ»´Î¼ÆÊ±µÄÊ±¼ä
-unsigned long interval = 100;  // Ê±¼ä¼ä¸ô£¬1Ãë
-int printCount_other = 0;  // ÒÑ¾­´òÓ¡µÄ´ÎÊı
-int printCount_mug = 0;  // ÒÑ¾­´òÓ¡µÄ´ÎÊı
+unsigned long previousMillis = 0;  // ä¸Šä¸€æ¬¡è®¡æ—¶çš„æ—¶é—´
+unsigned long interval = 100;  // æ—¶é—´é—´éš”ï¼Œ1ç§’
+int printCount_other = 0;  // å·²ç»æ‰“å°çš„æ¬¡æ•°
+int printCount_mug = 0;  // å·²ç»æ‰“å°çš„æ¬¡æ•°
 int printCount_scissors = 0; 
 
-const int targetCount = 5;  // Ä¿±ê´òÓ¡µÄ´ÎÊı 
+const int targetCount = 5;  // ç›®æ ‡æ‰“å°çš„æ¬¡æ•° 
 
 
 void setup() {
@@ -138,15 +138,15 @@ void setup() {
 
   // put your setup code here, to run once:
   Serial.begin(115200);
-  Serial.print("Á¬½Ó Wifi");
+  Serial.print("è¿æ¥ Wifi");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED){
     Serial.print(".");
     delay(200);
   }
   Serial.println("");
-  Serial.println("WiFi Á¬½Ó³É¹¦.");
-  Serial.println("IP µØÖ·: ");
+  Serial.println("WiFi è¿æ¥æˆåŠŸ.");
+  Serial.println("IP åœ°å€: ");
   Serial.println(WiFi.localIP());
   Serial.println();
 
@@ -256,7 +256,7 @@ void loop() {
       pred_index = ix;
       pred_value = result.classification[ix].value;
     }
-//´Ë´¦ÊÇÅĞ¶ÏÍÆ¼öÀà±ğÊÇ0£¬ÖÃĞÅÂÊ´óÓÚ0.8Ê±£¬Êä³öÍÆÀíµÄ±êÇ©ÃûºÍÔ¤²âÊıÖµ
+//æ­¤å¤„æ˜¯åˆ¤æ–­æ¨èç±»åˆ«æ˜¯0ï¼Œç½®ä¿¡ç‡å¤§äº0.8æ—¶ï¼Œè¾“å‡ºæ¨ç†çš„æ ‡ç­¾åå’Œé¢„æµ‹æ•°å€¼
     if ((pred_index == 0) && (pred_value > 0.8)) {
       
     
@@ -265,32 +265,32 @@ void loop() {
       digitalWrite(Buzzer, LOW);
       //Serial.print("other:");
       //Serial.println(printCount_other);
-        /* smtp¿ªÆôdebug£¬debugĞÅÏ¢Êä³öµ½´®¿Ú */
+        /* smtpå¼€å¯debugï¼Œdebugä¿¡æ¯è¾“å‡ºåˆ°ä¸²å£ */
         smtp.debug(1);
 
-        /* ×¢²á»Øµ÷º¯Êı£¬»ñÈ¡ÓÊ¼ş·¢ËÍ×´Ì¬ */
+        /* æ³¨å†Œå›è°ƒå‡½æ•°ï¼Œè·å–é‚®ä»¶å‘é€çŠ¶æ€ */
         smtp.callback(getSmtpStatusCallback);
 
 
         ESP_Mail_Session session;
 
-        /* ÉèÖÃsmtp Ïà¹Ø²ÎÊı£¬ host, portµÈ */
+        /* è®¾ç½®smtp ç›¸å…³å‚æ•°ï¼Œ host, portç­‰ */
         session.server.host_name = SMTP_HOST;
         session.server.port = SMTP_PORT;
         session.login.email = AUTHOR_EMAIL;
         session.login.password = AUTHOR_PASSWORD;
         session.login.user_domain = "";
 
-        /* ¶¨Òåsmtp messageÏûÏ¢Àà */
+        /* å®šä¹‰smtp messageæ¶ˆæ¯ç±» */
         SMTP_Message message;
 
-        /* ¶¨ÒåÓÊ¼şÏûÏ¢ÀàµÄÃû³Æ£¬·¢¼şÈË£¬±êÌâºÍÌí¼ÓÊÕ¼şÈË */
+        /* å®šä¹‰é‚®ä»¶æ¶ˆæ¯ç±»çš„åç§°ï¼Œå‘ä»¶äººï¼Œæ ‡é¢˜å’Œæ·»åŠ æ”¶ä»¶äºº */
         message.sender.name = "Fire_Warning!";
         message.sender.email = AUTHOR_EMAIL;
         message.subject = "Fire_check_sencor";
         message.addRecipient("Sara", RECIPIENT_EMAIL);
 
-        /* ÉèÖÃmessage html ¸ñÊ½ºÍÄÚÈİ*/
+        /* è®¾ç½®message html æ ¼å¼å’Œå†…å®¹*/
         String htmlMsg = "<div style=\"color:#2f4468;\"><h1>Battery car is on fire, please check immediately or dial 119</h1><p>Sent from Firechecker</p></div>";
         message.html.content = htmlMsg.c_str();
         message.html.content = htmlMsg.c_str();
@@ -298,11 +298,11 @@ void loop() {
         message.html.transfer_encoding = Content_Transfer_Encoding::enc_7bit;
 
 
-        /* Á¬½Ósmtp·şÎñÆ÷ */
+        /* è¿æ¥smtpæœåŠ¡å™¨ */
         if (!smtp.connect(&session))
           return;
         if (!MailClient.sendMail(&smtp, &message))
-          Serial.println("·¢ËÍÓÊ¼şÊ§°Ü");
+          Serial.println("å‘é€é‚®ä»¶å¤±è´¥");
         u8x8.clear();
         u8x8.setCursor(2, 2);
         u8x8.print("other:");
@@ -339,24 +339,24 @@ void loop() {
   
     }
 
-  unsigned long currentMillis = millis();  // µ±Ç°Ê±¼ä£¬´Ó¿ªÆôArduino¿ªÊ¼¼ÆÊ±
-  if (currentMillis - previousMillis >= interval) {  // ÅĞ¶ÏÊÇ·ñµ½´ï¹æ¶¨µÄÊ±¼ä¼ä¸ô
-    previousMillis = currentMillis;  // ¼ÇÂ¼ÕâÒ»´Î½øÈëÖ´ĞĞ´úÂë¿éµÄÊ±¼ä
-    /*if (printCount_other > targetCount) {  // ÅĞ¶ÏÊÇ·ñ´ïµ½´òÓ¡Ä¿±ê´ÎÊı
+  unsigned long currentMillis = millis();  // å½“å‰æ—¶é—´ï¼Œä»å¼€å¯Arduinoå¼€å§‹è®¡æ—¶
+  if (currentMillis - previousMillis >= interval) {  // åˆ¤æ–­æ˜¯å¦åˆ°è¾¾è§„å®šçš„æ—¶é—´é—´éš”
+    previousMillis = currentMillis;  // è®°å½•è¿™ä¸€æ¬¡è¿›å…¥æ‰§è¡Œä»£ç å—çš„æ—¶é—´
+    /*if (printCount_other > targetCount) {  // åˆ¤æ–­æ˜¯å¦è¾¾åˆ°æ‰“å°ç›®æ ‡æ¬¡æ•°
       
-      Serial.println("Ö¸ÏòÆäËû");
-      //myServo.write(45); // ½«Òı½Å3ÉèÖÃÎª¸ßµçÆ½
-      //delay(5000);  // µÈ´ı5ÃëÖÓ
+      Serial.println("æŒ‡å‘å…¶ä»–");
+      //myServo.write(45); // å°†å¼•è„š3è®¾ç½®ä¸ºé«˜ç”µå¹³
+      //delay(5000);  // ç­‰å¾…5ç§’é’Ÿ
       myServo.write(0);  // 
-      printCount_other = 0; // ½«printCountÖÃÁã
+      printCount_other = 0; // å°†printCountç½®é›¶
     }*/
-    if (printCount_mug > targetCount) {  // ÅĞ¶ÏÊÇ·ñ´ïµ½´òÓ¡Ä¿±ê´ÎÊı
-      delay(5000);  // µÈ´ı5ÃëÖÓ
-      printCount_mug = 0; // ½«printCountÖÃÁã
+    if (printCount_mug > targetCount) {  // åˆ¤æ–­æ˜¯å¦è¾¾åˆ°æ‰“å°ç›®æ ‡æ¬¡æ•°
+      delay(5000);  // ç­‰å¾…5ç§’é’Ÿ
+      printCount_mug = 0; // å°†printCountç½®é›¶
     }
-    if (printCount_scissors > targetCount) {  // ÅĞ¶ÏÊÇ·ñ´ïµ½´òÓ¡Ä¿±ê´ÎÊı
-      delay(5000);  // µÈ´ı5ÃëÖÓ
-      printCount_scissors = 0; // ½«printCountÖÃÁã
+    if (printCount_scissors > targetCount) {  // åˆ¤æ–­æ˜¯å¦è¾¾åˆ°æ‰“å°ç›®æ ‡æ¬¡æ•°
+      delay(5000);  // ç­‰å¾…5ç§’é’Ÿ
+      printCount_scissors = 0; // å°†printCountç½®é›¶
     }
   }
 #endif
@@ -490,30 +490,30 @@ bool ei_camera_capture(uint32_t img_width, uint32_t img_height, uint8_t *out_buf
 #if !defined(EI_CLASSIFIER_SENSOR) || EI_CLASSIFIER_SENSOR != EI_CLASSIFIER_SENSOR_CAMERA
 #error "Invalid model for current sensor"
 #endif
-/* »ñÈ¡·¢ËÍ×´Ì¬µÄ»Øµ÷º¯Êı */
+/* è·å–å‘é€çŠ¶æ€çš„å›è°ƒå‡½æ•° */
 void getSmtpStatusCallback(SMTP_Status status){
-  /* Êä³öÓÊ¼ş·¢ËÍ×´Ì¬ĞÅÏ¢ */
+  /* è¾“å‡ºé‚®ä»¶å‘é€çŠ¶æ€ä¿¡æ¯ */
   Serial.println(status.info());
 
-  /*×´Ì¬»ñÈ¡³É¹¦£¬´òÓ¡×´Ì¬ĞÅÏ¢ */
+  /*çŠ¶æ€è·å–æˆåŠŸï¼Œæ‰“å°çŠ¶æ€ä¿¡æ¯ */
   if (status.success()){
     Serial.println("----------------");
     
-    ESP_MAIL_PRINTF("ÓÊ¼ş·¢ËÍ³É¹¦¸öÊı: %d\n", status.completedCount());
-    ESP_MAIL_PRINTF("ÓÊ¼ş·¢ËÍÊ§°Ü¸öÊı: %d\n", status.failedCount());
+    ESP_MAIL_PRINTF("é‚®ä»¶å‘é€æˆåŠŸä¸ªæ•°: %d\n", status.completedCount());
+    ESP_MAIL_PRINTF("é‚®ä»¶å‘é€å¤±è´¥ä¸ªæ•°: %d\n", status.failedCount());
     
     Serial.println("----------------\n");
     struct tm dt;
 
     for (size_t i = 0; i < smtp.sendingResult.size(); i++){
-      /* ÒÀ´Î»ñÈ¡·¢ËÍÓÊ¼ş×´Ì¬ */
+      /* ä¾æ¬¡è·å–å‘é€é‚®ä»¶çŠ¶æ€ */
       SMTP_Result result = smtp.sendingResult.getItem(i);
       time_t ts = (time_t)result.timestamp;
       localtime_r(&ts, &dt);
-      ESP_MAIL_PRINTF("ÊÕ¼şÈË: %sÓÊ¼ş·¢ËÍ×´Ì¬ĞÅÏ¢\n", result.recipients);
-      ESP_MAIL_PRINTF("×´Ì¬: %s\n", result.completed ? "success" : "failed");
-      ESP_MAIL_PRINTF("·¢ËÍÊ±¼ä: %d/%d/%d %d:%d:%d\n", dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday, dt.tm_hour, dt.tm_min, dt.tm_sec);
-      ESP_MAIL_PRINTF("ÓÊ¼ş±êÌâ: %s\n", result.subject);
+      ESP_MAIL_PRINTF("æ”¶ä»¶äºº: %sé‚®ä»¶å‘é€çŠ¶æ€ä¿¡æ¯\n", result.recipients);
+      ESP_MAIL_PRINTF("çŠ¶æ€: %s\n", result.completed ? "success" : "failed");
+      ESP_MAIL_PRINTF("å‘é€æ—¶é—´: %d/%d/%d %d:%d:%d\n", dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday, dt.tm_hour, dt.tm_min, dt.tm_sec);
+      ESP_MAIL_PRINTF("é‚®ä»¶æ ‡é¢˜: %s\n", result.subject);
     }
     
     Serial.println("----------------\n");
